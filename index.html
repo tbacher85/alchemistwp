@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Alchemist's Forge: URL Transmuter [DEMO]</title>
+    <title>Alchemist's Forge - URL Shortener Demo</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Your existing styles remain the same */
+        /* Custom styles for enhanced alchemy theme */
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
         
         body {
@@ -20,6 +20,7 @@
             overflow-x: hidden;
         }
         
+        /* Animated background elements */
         .bg-circles {
             position: fixed;
             top: 0;
@@ -68,6 +69,7 @@
             100% { transform: translateY(0) rotate(360deg); }
         }
         
+        /* Gold gradient text */
         .gold-gradient {
             background: linear-gradient(135deg, #FFC107 0%, #FFD54F 25%, #FFECB3 50%, #FFD54F 75%, #FFC107 100%);
             -webkit-background-clip: text;
@@ -76,6 +78,7 @@
             text-shadow: 0 0 30px rgba(255, 193, 7, 0.3);
         }
         
+        /* Glass morphism effect */
         .glass {
             background: rgba(28, 28, 48, 0.7);
             backdrop-filter: blur(10px);
@@ -83,6 +86,7 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
         
+        /* Enhanced gold glow */
         .gold-glow {
             box-shadow: 0 0 5px rgba(255, 193, 7, 0.5);
             transition: all 0.3s ease;
@@ -93,6 +97,7 @@
             transform: translateY(-2px);
         }
         
+        /* Pulse animation for important elements */
         @keyframes pulse-gold {
             0% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7); }
             70% { box-shadow: 0 0 0 10px rgba(255, 193, 7, 0); }
@@ -103,6 +108,7 @@
             animation: pulse-gold 2s infinite;
         }
         
+        /* Toast notifications */
         .toast {
             transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             transform: translateX(100%);
@@ -114,6 +120,7 @@
             opacity: 1;
         }
         
+        /* Link item hover effects */
         .link-item {
             transition: all 0.3s ease;
             border-left: 3px solid transparent;
@@ -125,6 +132,7 @@
             transform: translateX(5px);
         }
         
+        /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -139,6 +147,7 @@
             border-radius: 10px;
         }
         
+        /* Loading spinner */
         .spinner {
             border: 2px solid rgba(255, 193, 7, 0.3);
             border-radius: 50%;
@@ -154,10 +163,12 @@
             100% { transform: rotate(360deg); }
         }
         
+        /* Title font */
         .title-font {
             font-family: 'Cinzel', serif;
         }
         
+        /* Shimmer effect for empty state */
         .shimmer {
             background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
             background-size: 200% 100%;
@@ -203,6 +214,7 @@
             font-size: 0.8rem;
             overflow: hidden;
             position: relative;
+            word-break: break-all;
         }
         
         .long-url {
@@ -239,13 +251,62 @@
                 margin-bottom: 1rem;
             }
             
+            /* Fix for explanation section grid */
+            .grid.md\:grid-cols-2 {
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
             .url-transformation {
                 flex-direction: column;
                 text-align: center;
+                gap: 8px;
             }
             
             .transform-arrow {
                 transform: rotate(90deg);
+                margin: 4px 0;
+            }
+            
+            .url-box {
+                font-size: 0.7rem;
+                padding: 8px;
+            }
+            
+            /* Ensure text fits in feature cards */
+            .bg-gradient-to-br.from-amber-900\/20.to-amber-800\/10 {
+                overflow-wrap: break-word;
+                word-wrap: break-word;
+            }
+            
+            /* Analytics box fixes */
+            .bg-black\/30.rounded-lg.p-4 {
+                font-size: 0.75rem;
+            }
+            
+            .bg-black\/30.rounded-lg.p-4 .font-mono {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Additional mobile optimizations for very small screens */
+        @media (max-width: 480px) {
+            .url-box {
+                font-size: 0.65rem;
+                padding: 6px;
+            }
+            
+            .bg-gradient-to-br.from-amber-900\/20.to-amber-800\/10 {
+                padding: 1rem;
+            }
+            
+            .bg-gradient-to-br.from-amber-900\/20.to-amber-800\/10 h3 {
+                font-size: 1.1rem;
+            }
+            
+            .bg-gradient-to-br.from-amber-900\/20.to-amber-800\/10 p {
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -264,13 +325,13 @@
     <!-- Header Section -->
     <header class="container mx-auto px-4 py-6 md:py-8 text-center relative">
         <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent rounded-full"></div>
-        <h1 class="text-4xl md:text-6xl font-bold gold-gradient title-font mb-4 tracking-wide">The Alchemist's Forge</h1>
+        <h1 class="text-4xl md:text-6xl font-bold gold-gradient title-font mb-4 tracking-wide">Alchemist's Forge</h1>
         <p class="text-lg md:text-xl text-amber-200 max-w-2xl mx-auto leading-relaxed px-4">
             Transform long, messy URLs into <span class="text-amber-300 font-semibold">golden, trackable links</span>
         </p>
         <div class="mt-4 bg-amber-900/30 inline-flex items-center px-4 py-2 rounded-full border border-amber-700/50">
             <i class="fas fa-flask text-amber-400 mr-2"></i>
-            <span class="text-amber-200 text-sm">Live Demo - Full Version Coming Soon</span>
+            <span class="text-amber-200 text-sm">URL Shortener Demo</span>
         </div>
         <div class="mt-4 flex justify-center space-x-2">
             <div class="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>
@@ -358,7 +419,7 @@
 
         <!-- Link Creation Section -->
         <section class="glass rounded-2xl p-6 mb-6 md:mb-8 relative overflow-hidden">
-            <div class="demo-badge">LIVE DEMO</div>
+            <div class="demo-badge">DEMO</div>
             
             <!-- Decorative corner accents -->
             <div class="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-amber-400 rounded-tl-lg"></div>
@@ -397,7 +458,7 @@
 
         <!-- Tracking Section -->
         <section class="glass rounded-2xl p-6 mb-6 md:mb-8 relative overflow-hidden">
-            <div class="demo-badge">LIVE DEMO</div>
+            <div class="demo-badge">DEMO</div>
             
             <!-- Decorative corner accents -->
             <div class="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-amber-400 rounded-tl-lg"></div>
@@ -587,13 +648,13 @@
         <div class="border-t border-gray-800 pt-6">
             <p class="flex items-center justify-center text-sm md:text-base">
                 <i class="fas fa-hat-wizard text-amber-500 mr-2"></i>
-                The Alchemist's Forge &copy; 2023 - Currently in Demo Phase
+                Alchemist's Forge &copy; 2023 - URL Shortener Demo
             </p>
         </div>
     </footer>
 
     <script>
-        // Your existing JavaScript code remains the same for the demo functionality
+        // Firebase simulation (in-memory state)
         const firestoreSimulation = {
             links: [],
             addLink: function(link) {
@@ -716,6 +777,13 @@
             return url;
         }
 
+        // Updated to use your custom domain
+        function getShortUrl(shortCode) {
+            // Replace with your actual custom domain
+            const demoDomain = "forge-demo.yourdomain.com";
+            return `https://${demoDomain}/s/${shortCode}`;
+        }
+
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
                 showToast('Short link copied to clipboard!', 'success');
@@ -750,7 +818,7 @@
             let html = '<div class="space-y-4">';
             
             links.forEach(link => {
-                const shortUrl = `${window.location.origin}/s/${link.shortCode}`;
+                const shortUrl = getShortUrl(link.shortCode);
                 const createdDate = new Date(link.createdAt).toLocaleDateString();
                 
                 html += `
@@ -923,7 +991,7 @@
             }
         });
 
-        // UPDATED: Formspree integration for waitlist form
+        // Formspree integration for waitlist form
         document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
