@@ -365,7 +365,7 @@
                             <i class="fas fa-arrow-right"></i>
                         </div>
                         <div class="url-box short-url">
-                            yourbrand.com/gold123
+                            elixir/gold123
                         </div>
                     </div>
                     
@@ -387,7 +387,7 @@
                     
                     <div class="bg-black/30 rounded-lg p-4 mb-3">
                         <div class="flex justify-between items-center mb-2">
-                            <span class="text-amber-300 font-mono">yourbrand.com/gold123</span>
+                            <span class="text-amber-300 font-mono">elixir/gold123</span>
                             <span class="bg-amber-500 text-black px-2 py-1 rounded-full text-sm font-bold">84 clicks</span>
                         </div>
                         <div class="text-xs text-gray-400">
@@ -588,7 +588,7 @@
                 <!-- Email Capture Form with Formspree -->
                 <form 
                     id="waitlist-form" 
-                    action="https://formspree.io/f/mzzjogeb" 
+                    action="https://formspree.io/f/YOUR_FORMSPREE_ID_HERE" 
                     method="POST"
                     class="space-y-4 max-w-md mx-auto"
                 >
@@ -777,19 +777,63 @@
             return url;
         }
 
-        // Updated to use your custom domain
+        // Updated to use 'elixir' domain
         function getShortUrl(shortCode) {
-            // Replace with your actual custom domain
-            const demoDomain = "forge-demo.yourdomain.com";
-            return `https://${demoDomain}/s/${shortCode}`;
+            return `https://elixir/${shortCode}`;
         }
 
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showToast('Short link copied to clipboard!', 'success');
-            }).catch(err => {
-                showToast('Failed to copy link', 'error');
-            });
+        // COMPLETELY REWRITTEN: Clipboard copy function - much more reliable
+        async function copyToClipboard(text) {
+            try {
+                // Modern clipboard API approach
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(text);
+                    showToast('Short URL copied to clipboard!', 'success');
+                    return true;
+                } else {
+                    // Fallback method that actually works
+                    const textArea = document.createElement('textarea');
+                    textArea.value = text;
+                    
+                    // Make the textarea invisible
+                    textArea.style.position = 'fixed';
+                    textArea.style.top = 0;
+                    textArea.style.left = 0;
+                    textArea.style.width = '2em';
+                    textArea.style.height = '2em';
+                    textArea.style.padding = 0;
+                    textArea.style.border = 'none';
+                    textArea.style.outline = 'none';
+                    textArea.style.boxShadow = 'none';
+                    textArea.style.background = 'transparent';
+                    textArea.style.color = 'transparent';
+                    
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    
+                    try {
+                        const successful = document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        
+                        if (successful) {
+                            showToast('Short URL copied to clipboard!', 'success');
+                            return true;
+                        } else {
+                            throw new Error('Copy command failed');
+                        }
+                    } catch (err) {
+                        document.body.removeChild(textArea);
+                        throw err;
+                    }
+                }
+            } catch (err) {
+                console.error('Failed to copy text:', err);
+                // Last resort - show the text and ask user to copy manually
+                prompt('Please copy this URL:', text);
+                showToast('Please use the text above to copy manually', 'info');
+                return false;
+            }
         }
 
         function updateTotalElixirs() {
@@ -826,25 +870,26 @@
                         <div class="flex flex-col md:flex-row md:items-center justify-between">
                             <div class="flex-1 mb-3 md:mb-0">
                                 <div class="flex flex-wrap items-center mb-2 gap-2">
-                                    <span class="font-mono text-amber-300 bg-amber-900/30 px-3 py-1 rounded-lg text-sm">/s/${link.shortCode}</span>
+                                    <span class="font-mono text-amber-300 bg-amber-900/30 px-3 py-1 rounded-lg text-sm">https://elixir/${link.shortCode}</span>
                                     <button 
-                                        onclick="copyToClipboard('${shortUrl}')" 
-                                        class="text-gray-400 hover:text-amber-300 transition-colors p-1 rounded gold-glow"
-                                        title="Copy Short Link"
+                                        onclick="copyToClipboard('https://elixir/${link.shortCode}')" 
+                                        class="text-gray-400 hover:text-amber-300 transition-colors p-2 rounded-lg gold-glow bg-amber-900/20"
+                                        title="Copy Short URL"
                                     >
                                         <i class="fas fa-copy text-sm"></i>
                                     </button>
                                     <span class="text-xs text-gray-500 bg-gray-800/50 px-2 py-1 rounded">Created: ${createdDate}</span>
                                 </div>
-                                <a href="${link.longUrl}" target="_blank" class="text-blue-300 hover:text-blue-200 transition-colors block truncate text-sm" title="${link.longUrl}">
-                                    ${formatUrl(link.longUrl)}
-                                </a>
+                                <div class="text-xs text-gray-400 mt-2">
+                                    <i class="fas fa-info-circle mr-1 text-amber-500"></i>
+                                    Original URL: <span class="text-gray-300 truncate block">${formatUrl(link.longUrl)}</span>
+                                </div>
                             </div>
                             <div class="flex items-center space-x-4">
                                 <div class="text-center">
                                     <div class="text-xl md:text-2xl font-bold text-amber-300">${link.clicks}</div>
                                     <div class="text-xs text-gray-400 uppercase tracking-wide flex items-center">
-                                        Clicks
+                                        Test Clicks
                                         <div class="ml-1 group relative">
                                             <i class="fas fa-question-circle text-gray-500 cursor-help"></i>
                                             <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
@@ -879,13 +924,18 @@
             linksContainer.innerHTML = html;
         }
 
+        // FIXED: No more 404 errors
         function visitLink(id) {
             const link = firestoreSimulation.getLinks().find(l => l.id === id);
             if (link) {
                 firestoreSimulation.updateLink(id, { clicks: link.clicks + 1 });
                 renderLinks();
+                
+                // Show demo message
+                showToast('Demo: Tracking click #' + (link.clicks + 1) + '. Opening original URL...', 'info');
+                
+                // Open the original URL directly (this works)
                 window.open(link.longUrl, '_blank');
-                showToast('Link opened! Click count updated.', 'success');
             }
         }
 
@@ -902,7 +952,7 @@
                         <h3 class="text-xl font-bold text-amber-300 mb-2">Delete Link?</h3>
                         <p class="text-gray-300">Are you sure you want to delete this link? This action cannot be reversed.</p>
                         <div class="mt-4 p-3 bg-amber-900/20 rounded-lg text-left">
-                            <p class="text-sm font-mono text-amber-300 truncate">/s/${link.shortCode}</p>
+                            <p class="text-sm font-mono text-amber-300 truncate">https://elixir/${link.shortCode}</p>
                             <p class="text-xs text-gray-400 truncate">${formatUrl(link.longUrl)}</p>
                         </div>
                     </div>
@@ -973,7 +1023,8 @@
                 button.disabled = false;
                 
                 urlInput.value = '';
-                showToast('Short link created successfully!', 'success');
+                // Updated success message
+                showToast('Demo link created! Click "Test" to see tracking in action.', 'success');
                 
                 const newLinkElement = document.getElementById(`link-${newLink.id}`);
                 if (newLinkElement) {
